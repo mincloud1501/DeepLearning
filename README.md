@@ -7,6 +7,38 @@ Deep Learning Study Project
 - TensorFlow는 기계 학습과 딥러닝을 위해 Google에서 만든 E2E Opensource Platform이다.
 - Tools, Library, Community Resource로 구성되어 첨단 기술을 구현할 수 있고, 개발자들은 ML이 접목된 application을 손쉽게 빌드 및 배포할 수 있다.
 
+#### Installation
+
+- 다른 프로그램에 영향을 미치지 않도록 Anaconda 환경에서 설치한다.
+	- 설치파일=Anaconda3-5.2.0-Windows-x86_64.exe (파이썬 3.6)
+	- numpy 버전=1.15.4
+	- tensorflow 버전=1.12.0
+	- keras 버전=2.2.4
+
+```bash
+$conda update -n base conda # conda 자체를 업데이트
+$conda update --all # 설치된 파이썬 패키지를 모두 최신 버전으로 업데이트
+```
+
+- tensorflow 이름을 갖는 conda 환경한다.
+
+```bash
+$ conda create -n tensorflow python=3.7
+```
+
+- 환경을 활성화시키고 그 안에서 pip를 이용하여 텐서플로우를 설치
+
+```bash
+$ source activate tensorflow # Linux 환경
+$ virtualenv tensorflow # Windows 환경
+
+(tensorflow)$ pip install tensorflow # tensorflow 설치
+(tensorflow)$ jupyter notebook --port=8888
+
+(tensorflow)$ source deactivate # Linux 환경
+(tensorflow)$ virtualenv deactivate # Windows 환경
+```
+
 ---
 
 ### Keras [![Sources](https://img.shields.io/badge/출처-Keras-yellow)](https://www.tensorflow.org/guide/keras?hl=ko)
@@ -56,6 +88,41 @@ model.compile(loss='mean_squared_error', optimizer=sgd)
 - AutoKeras는 아키텍처 및 심층 학습 모델의 하이퍼 프레임을 `자동`으로 검색하는 기능을 제공한다.
 - AutoKeras1.0이 곧 출시 예정이다. (현재 AutoKeras는 Python3.6과만 호환)
 
+
+#### MNIST Example (MNIST 문자 인식 프로그램)
+
+- MNIST 이미지 x가 입력으로 들어오면 그 이미지가 무슨 숫자인지를 해석해서 y로 출력해주는 가장 기본적인 이미지 인식 프로그램
+
+
+#### [Data Set 준비]
+
+- 필요한 훈련set, 검증set, Test Set을 준비 : MNIST은 28×28 크기의 0~9사이의 숫자 이미지와 이에 해당하는 레이블(Label)로 구성된 데이터베이스
+- 
+
+```js
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+```
+- 모델의 학습 및 평가를 위해 포맷을 변환- 
+- 컴퓨터가 인식하기엔 숫자가 그려진 이미지는 단지 픽셀 밝기 값(Intensity)으로 구성된 2차원 행렬이다.
+	- 사람마다 필기체가 달라 위의 그림 1을 보면 모두 1이라는 글자를 썼지만 1의 위치와 모양이 제각각
+
+```js
+x = tf.placeholder(tf.float32, [None, 784])
+W = tf.Variable(tf.zeros([784, 10]))
+b = tf.Variable(tf.zeros([10]))
+y = tf.nn.softmax(tf.matmul(x, W) + b)
+```
+
+
+#### [Model 구성]
+
+- 위 문제를 해결하기 위해 `Softmax Regression` 기법을 사용 : 어떤 input x가 주어졌을때 그것이 class i일거라고 확신하는 정도(evidence)
+- 위의 evidence를 softmax function을 통해 프로그램이 레이블(label)을 y라고 예측할 확률로 변경
+
+
+- Batch Size
+- Epoch
 
 ---
 
