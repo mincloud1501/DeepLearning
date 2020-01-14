@@ -88,8 +88,9 @@ model.compile(loss='mean_squared_error', optimizer=sgd)
 - AutoKeras는 아키텍처 및 심층 학습 모델의 하이퍼 프레임을 `자동`으로 검색하는 기능을 제공한다.
 - AutoKeras1.0이 곧 출시 예정이다. (현재 AutoKeras는 Python3.6과만 호환)
 
+---
 
-#### 패션 MNIST 데이터셋 Import [![Sources](https://img.shields.io/badge/출처-TensorflowGuide-yellow)](https://www.tensorflow.org/tutorials/keras/classification?hl=ko)
+## 패션 MNIST [![Sources](https://img.shields.io/badge/출처-TensorflowGuide-yellow)](https://www.tensorflow.org/tutorials/keras/classification?hl=ko)
 
 - 10개의 범주(category)와 70,000개의 흑백 이미지로 구성된 패션 MNIST 데이터셋을 사용
 - 네트워크를 훈련하는데 60,000개의 이미지를 사용하여, 네트워크가 얼마나 정확하게 이미지를 분류하는지 10,000개의 이미지로 평가
@@ -114,7 +115,7 @@ fashion_mnist = keras.datasets.fashion_mnist
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 ```
 
-#### Data 탐색
+#### [Data 탐색]
 
 ```js
 train_images.shape // 훈련 세트에 60,000개의 이미지가 있으며, 각 이미지는 28x28 픽셀로 표현
@@ -124,7 +125,7 @@ test_images.shape // 테스트 세트에는 10,000개의 이미지가 있으며 
 len(test_labels) // 테스트 세트는 10,000개의 이미지에 대한 레이블을 가지고 있음
 ````
 
-#### 데이터 전처리
+#### [데이터 전처리]
 
 - 네트워크를 훈련하기 전에 데이터를 전처리해야 하며, 훈련 세트에 있는 첫 번째 이미지를 보면 픽셀 값의 범위가 0~255 사이라는 것을 알 수 있다.
 
@@ -157,7 +158,7 @@ for i in range(25):
 plt.show()
 ```
 
-#### 모델 구성
+#### [모델 구성]
 
 - 신경망 모델을 만들려면 모델의 층을 구성한 다음 모델을 컴파일 해야 한다.
 - 신경망의 기본 구성 요소는 층(layer)으로 주입된 데이터에서 표현을 추출한다. tf.keras.layers.Dense와 같은 층들의 가중치(parameter)는 훈련하는 동안 학습된다.
@@ -170,7 +171,7 @@ model = keras.Sequential([
 ])
 ```
 
-#### 모델 컴파일
+#### [모델 컴파일]
 
 - 모델을 훈련하기 전에 필요한 몇 가지 설정이 모델 컴파일 단계에서 추가된다.
 	- `손실 함수(Loss function)` : 훈련 하는 동안 모델의 오차를 측정. 모델의 학습이 올바른 방향으로 향하도록 이 함수를 최소화해야 한다.
@@ -183,7 +184,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 ```
 
-#### 모델 훈련
+#### [모델 훈련]
 
 - 신경망 모델 훈련은 다음과 같은 단계로 진행된다.
 	- 훈련 데이터를 모델에 주입
@@ -195,7 +196,7 @@ model.compile(optimizer='adam',
 model.fit(train_images, train_labels, epochs=5)
 ```
 
-#### 정확도 평가
+#### [정확도 평가]
 
 - 테스트 세트에서 모델의 성능을 비교한다.
 - 테스트 세트의 정확도가 훈련 세트의 정확도보다 조금 낮다.
@@ -206,7 +207,7 @@ test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 print('\n테스트 정확도:', test_acc)
 ```
 
-#### 예측 만들기
+#### [예측 만들기]
 
 - 훈련된 모델을 사용하여 이미지에 대한 예측을 만들 수 있다.
 
@@ -301,6 +302,34 @@ print(predictions_single)
 // model.predict는 2차원 넘파이 배열을 반환하므로 첫 번째 이미지의 예측을 선택
 np.argmax(predictions_single[0])
 ```
+
+---
+
+## 케라스와 텐서플로 허브를 사용한 영화 리뷰 텍스트 분류하기
+
+- 영화 리뷰(review) 텍스트를 긍정(positive) 또는 부정(negative)으로 분류한다. 이 예제는 이진(binary)-또는 클래스(class)가 두 개인- 분류 문제
+- `Internet Movie Database`에서 수집한 50,000개의 영화 리뷰 텍스트를 담은 IMDB 데이터셋을 사용
+- 25,000개 리뷰는 훈련용, 25,000개는 테스트용
+- Tensorflow에서 Model을 만들고 훈련하기 위한 고수준 Python API인 `tf.keras`와 전이 학습 Library이자 Platform인 `Tensorflow Hub`를 사용
+- `Tensorflow Hub`는 재사용 가능한 머신러닝 모델의 재사용 가능한 부분을 게시, 검색, 소비하기 위한 라이브러리
+- 모듈은 해당 가중치 및 자산이 포함되어 있으며 전이 학습이라는 프로세스에서 여러 작업 간에 재사용할 수 있는 TensorFlow 그래프의 자체 포함된 조각. 전이 학습을 통해 다음과 같은 작업이 가능
+  - 소규모 데이터세트를 사용한 모델 학습
+  - 일반화 개선
+  - 학습 속도 개선
+
+```js
+// TensorFlow 2.0.0 및 TensorFlow Hub 설치
+$ conda install tensorflow
+$ pip install "numpy<1.17"
+$ pip install "tensorflow_hub==0.7.0"
+$ pip install "tf-nightly"
+$ pip install --upgrade tensorflow-hub
+$ pip install tensorflow-datasets
+```
+[colab text_classification_with_hub.ipynb]
+https://colab.research.google.com/github/tensorflow/docs/blob/master/site/ko/tutorials/keras/text_classification_with_hub.ipynb?hl=ko
+
+---
 
 - Batch Size
 - Epoch
