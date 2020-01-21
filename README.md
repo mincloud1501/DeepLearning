@@ -39,6 +39,26 @@ $ virtualenv tensorflow # Windows 환경
 (tensorflow)$ virtualenv deactivate # Windows 환경
 ```
 
+#### Getting started with Voilà
+
+- Installation
+
+```bash
+$ conda install -c conda-forge voila
+$ pip install voila
+```
+
+- The example notebook also requires bqplot and ipyvuetify:
+
+```bash
+pip install bqplot
+pip install ipyvuetify
+pip install voila-vuetify
+voila --template vuetify-default bqplot_vuetify_example.ipynb
+```
+
+http://localhost:8866/
+
 ---
 
 ### Keras [![Sources](https://img.shields.io/badge/출처-Keras-yellow)](https://www.tensorflow.org/guide/keras?hl=ko)
